@@ -1,3 +1,4 @@
+import LinkAccountButton from "@/components/link-account-button";
 import { Button } from "@/components/ui/button";
 
 
@@ -5,8 +6,7 @@ export default async function Home() {
   
   return(
     <>
-    <h1> Hello </h1>
-    <Button> Click me </Button>
+    <LinkAccountButton />
     </>
   )
 }
