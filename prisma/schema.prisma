@@ -27,6 +27,9 @@ model Account {
     accessToken        String       @unique
     emailAddress       String 
     name               String
+    nextDeltaToken     String?
 
-    user           User           @relation(fields: [userId], references: [id])
+    user               User           @relation(fields: [userId], references: [id])
 }
+
+
