@@ -13,17 +13,19 @@ export const POST = async( req: NextRequest) => {
     return NextResponse.json({Error: 'Missing accountId or userId, Check again'}, {status : 400})
   }     
 
-  const dbAccount = db.account.findUnique( {
+  const dbAccount =  await db.account.findUnique( {
     where : {
       id  : accountId,
       userId
-    }
-  })
+    },
+    select: {
+      accessToken: true, // Explicitly fetch accessToken
+    },
+  });
 
-  if (!dbAccount) return NextResponse.json({error : "Account not found"}, {status : 400})
+  if (!dbAccount || !dbAccount.accessToken) return NextResponse.json({error : "Account not found"}, {status : 400})
 
-  const account = new Account(dbAccount.AccessToken);
-
+  const account = new Account(dbAccount.accessToken);
 
   const response = await account.performInitialSync();
 
@@ -33,6 +35,9 @@ export const POST = async( req: NextRequest) => {
 
   console.log(emails,deltaToken)
 
+  return NextResponse.json({ message: "Initial sync completed", emails, deltaToken }, { status: 200 });
+
+}
 /*   await db.account.update({
     where: {
       id: accountId
@@ -43,5 +48,5 @@ export const POST = async( req: NextRequest) => {
   })
 
   await syncEmailsToDatabase(emails) */
-}
+
 

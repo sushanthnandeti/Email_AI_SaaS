@@ -33,8 +33,7 @@ export const GET = async(req: NextRequest) => {
 
         const accountDetails = await getAccountDetails(token.accessToken);
         
-        console.log(token.accessToken);
-        console.log(accountDetails);
+    
         
         await db.account.upsert({
             where : {
@@ -56,7 +55,7 @@ export const GET = async(req: NextRequest) => {
         // trigger the initial sync request on our request (/ap/initial-sync)
         
         waitUntil(
-            axios.post(`${process.env.NEXT_PUBLIC_URL}/api/intial-sync`, {
+            axios.post(`${process.env.NEXT_PUBLIC_URL}/api/initial-sync`, {
                 accountId : token.accountId.toString(),
                 userId,
             }
