@@ -3,7 +3,7 @@ import { db } from '@/server/db';
 import React from 'react'
 import { NextRequest, NextResponse } from 'next/server';
 import { Account } from '@/lib/account';
-
+import { syncEmailsToDatabase } from '@/lib/sync-to-db';
 
 export const POST = async( req: NextRequest) => {
 
@@ -33,20 +33,24 @@ export const POST = async( req: NextRequest) => {
 
   const {emails, deltaToken} = response
 
-  console.log(emails,deltaToken)
 
-  return NextResponse.json({ message: "Initial sync completed", emails, deltaToken }, { status: 200 });
+  await syncEmailsToDatabase(emails, accountId);
 
-}
+// update the next latest token in the database
+
 /*   await db.account.update({
     where: {
-      id: accountId
+        token: dbAccount.token,
     },
-    data: { 
-      nextDeltaToken : deltaToken
-    }
-  })
+    data: {
+        nextDeltaToken: deltaToken,
+    },
+  });
+  console.log('sync complete', deltaToken)
+ */
 
-  await syncEmailsToDatabase(emails) */
 
+return NextResponse.json({ success: true, deltaToken }, { status: 200 });
+  
+};
 
