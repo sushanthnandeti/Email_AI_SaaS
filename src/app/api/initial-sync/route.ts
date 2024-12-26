@@ -38,16 +38,17 @@ export const POST = async( req: NextRequest) => {
 
 // update the next latest token in the database
 
-/*   await db.account.update({
+  await db.account.update({
     where: {
-        token: dbAccount.token,
+        accessToken: dbAccount.accessToken,
     },
     data: {
         nextDeltaToken: deltaToken,
     },
   });
+  
   console.log('sync complete', deltaToken)
- */
+
 
 
 return NextResponse.json({ success: true, deltaToken }, { status: 200 });
