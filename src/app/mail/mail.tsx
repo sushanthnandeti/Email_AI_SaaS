@@ -6,6 +6,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/component
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import AccountSwitcher from './account-switcher'
 
 
 
@@ -44,7 +45,8 @@ const Mail = ({ defaultLayout = [20,32,48],navCollapsedSize,defaultCollapse } : 
                  <div className=' flex flex-col h-full flex-1'>
                          {/* Account Switcher */}
                         <div className={cn('flex h-[52px] items-center justify-between', isCollapsed ? 'h-[52px]' : 'px-2')}>
-                             Account Switcher     
+                            
+                             <AccountSwitcher isCollapsed = {isCollapsed} />    
                         </div>
                         
                         <Separator />
