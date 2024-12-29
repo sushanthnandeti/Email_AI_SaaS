@@ -4,6 +4,8 @@ import { api } from "@/trpc/react"
 import { Select, SelectContent, SelectItem } from "@/components/ui/select";
 import { SelectTrigger, SelectValue } from "@radix-ui/react-select";
 import { cn } from "@/lib/utils";
+import { Plus } from "lucide-react";
+import { getAurinkoAuthUrl } from "@/lib/aurinko";
 
 type Props = {
     isCollapsed : boolean
@@ -42,8 +44,17 @@ const AccountSwitcher = ({isCollapsed} : Props) => {
                                         </SelectItem>
                                     )
                                 })}
-                            
+
+                                <div onClick = {async () => {
+                                    const authurl = await getAurinkoAuthUrl('Google')
+                                    window.location.href = authurl
+                                }}
+                                className="flex relative hover:bg-gray-50 w-full cursor-pointer items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-accent">
+                                    <Plus className="size-4 mr-1" />
+                                        Add Account
+                                </div>
                         </SelectContent>
+
 
             </SelectTrigger>
 

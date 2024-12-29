@@ -1,7 +1,18 @@
 "use client"
 
 import React from 'react'
-import Mail from './mail'
+//import Mail from './mail'
+import dynamic from 'next/dynamic'
+
+
+// Making sure Nextjs renders the Mail component on client side. 
+
+const Mail = dynamic(() => {
+    return import('./mail')
+}, {
+  ssr: false
+})
+
 
 const MailDashboard = () => {
   return (

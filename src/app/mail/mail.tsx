@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import AccountSwitcher from './account-switcher'
+import Sidebar from './sidebar'
 
 
 
@@ -51,7 +52,8 @@ const Mail = ({ defaultLayout = [20,32,48],navCollapsedSize,defaultCollapse } : 
                         
                         <Separator />
                          {/* SideBar */}
-                         SideBar
+                         
+                         <Sidebar isCollapsed={isCollapsed} />
 
                         <div className='flex-1'>  </div>
                            {/*  Ask AI */}
