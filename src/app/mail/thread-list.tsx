@@ -1,14 +1,16 @@
+"use client"
+
+
 import useThreads from '@/hooks/use-threads'
 import React, { ComponentProps } from 'react'
 import {format, formatDistanceToNow} from 'date-fns';
 import { cn } from '@/lib/utils';
 import DOMPurify from 'dompurify';
-import { Leaf } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 const ThreadList = () => {
 
-  const { threads } = useThreads()
+  const { threads, threadId, setThreadId} = useThreads()
 
   const groupedThreads = threads?.reduce((acc,thread) => {
     const date = format(thread.emails[0]?.sentAt ?? new Date(), 'yyyy-MM-dd')
@@ -34,7 +36,11 @@ const ThreadList = () => {
                         
                         <div> 
                             {threads.map(thread => {
-                                return <button key = {thread.id} className= {cn('flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all relative ')}>
+                                return <button key = {thread.id} onClick = {() => setThreadId(thread.id)} className= 
+                                {cn('flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all relative ' , 
+                                    {'bg-accent' : thread.id === threadId}
+                                )
+                                    }>
                                             <div className='flex flex-col w-full gap-2'>
                                                 <div className='flex items-center gap-2'>
                                                     <div className='font-semibold'>
