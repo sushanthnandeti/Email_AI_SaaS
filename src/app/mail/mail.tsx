@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import AccountSwitcher from './account-switcher'
 import Sidebar from './sidebar'
 import ThreadList from './thread-list'
+import TheadDisplay from './thread-display'
 
 
 
@@ -90,7 +91,7 @@ const Mail = ({ defaultLayout = [20,32,48],navCollapsedSize,defaultCollapse } : 
             <ResizableHandle withHandle /> 
             {/* Panel 3 */}
             <ResizablePanel defaultSize= {defaultLayout[2]} minSize = {30}>
-                    thread display here
+                    <TheadDisplay />
             </ResizablePanel>
         </ResizablePanelGroup>
     </TooltipProvider>
