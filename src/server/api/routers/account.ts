@@ -3,7 +3,7 @@ import { createTRPCRouter, privateProcedure } from "../trpc";
 import { error } from "console";
 import { z } from "zod";
 import { Prisma } from "@prisma/client";
-import { FileTerminal } from "lucide-react";
+
 
 
 export const authoriseAccountAccess = async( accountId : string, userId : string) => {
@@ -55,7 +55,7 @@ export const accountRouter = createTRPCRouter({
                     ...filter
                 }
             }) 
-        }),
+        }), 
         
     getThreads : privateProcedure.input(z.object({
         accountId: z.string(),
@@ -63,7 +63,7 @@ export const accountRouter = createTRPCRouter({
         done: z.boolean()
     })).query(async ({ ctx, input}) => {
         
-        const account = await authoriseAccountAccess(input.accountId, ctx.auth.userId);
+        const account = await authoriseAccountAccess(input.accountId, ctx.auth.userId)
         
 
         let filter: Prisma.ThreadWhereInput = {}
