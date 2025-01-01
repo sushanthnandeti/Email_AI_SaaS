@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-/* import KBar from "@/components/KBar"; */
+import KBar from "@/components/KBar";
 import { ClerkProvider } from "@clerk/nextjs";
 
 import { GeistSans } from "geist/font/sans";
@@ -23,9 +23,9 @@ export default function RootLayout({
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
             <TRPCReactProvider>
               {children}
-              {/* <KBar>
+               <KBar>
                 {children}
-              </KBar> */}
+              </KBar> 
             </TRPCReactProvider>
           </ThemeProvider>
             

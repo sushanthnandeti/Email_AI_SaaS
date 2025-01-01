@@ -9,10 +9,13 @@ const useThreads = () => {
 
 
   const {data : accounts, isFetching, refetch} = api.account.getAccounts.useQuery();
-  const [accountId] = useLocalStorage("accountId", "");
+  console.log(accounts);
+  const [accountId] = useLocalStorage("accountId", '');
   const [tab] = useLocalStorage("normalhuman-tab", "inbox");
   const [done] = useLocalStorage("normalhuman-done", false);
   const [threadId, setThreadId] = useAtom(threadIdAtom)
+
+  console.log("Your account id is:", accountId)
 
   const {data: threads} = api.account.getThreads.useQuery({
     accountId,
@@ -22,7 +25,7 @@ const useThreads = () => {
   {
     enabled : !!accountId && !! tab, placeholderData: (e) => e, refetchInterval : 5000
   })
-
+  console.log(accountId);
   return {
     threads, 
     isFetching,

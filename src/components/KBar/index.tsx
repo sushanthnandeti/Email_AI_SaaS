@@ -1,4 +1,4 @@
-/* "use client"
+"use client"
 
 import React from 'react'
 import {KBarProvider, KBarPortal, KBarAnimator, KBarSearch, KBarPositioner, Action, Priority} from 'kbar';
@@ -96,4 +96,3 @@ const ActualComponent = ({children} : {children : React.ReactNode }) => {
 </>
   )
 }
- */
