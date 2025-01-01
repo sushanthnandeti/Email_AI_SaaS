@@ -1,4 +1,4 @@
-import { KBarResults, useMatches } from "kbar";
+/* import { KBarResults, useMatches } from "kbar";
 import ResultItem from "./result-item";
 
 export default function RenderResults() {
@@ -20,4 +20,4 @@ export default function RenderResults() {
             }
         />
     );
-}
+} */
