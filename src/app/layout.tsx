@@ -22,7 +22,6 @@ export default function RootLayout({
         <body>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
             <TRPCReactProvider>
-              {children}
                <KBar>
                 {children}
               </KBar> 

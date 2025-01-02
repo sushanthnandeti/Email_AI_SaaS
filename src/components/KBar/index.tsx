@@ -83,7 +83,7 @@ export default function KBar({ children } : {children : React.ReactNode}) {
 const ActualComponent = ({children} : {children : React.ReactNode }) => {
 
   useThemeSwitching();
-  useAccountSwitching()
+  useAccountSwitching();
   return (
     <>
     <KBarPortal>
