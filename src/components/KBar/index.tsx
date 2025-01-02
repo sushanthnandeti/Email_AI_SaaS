@@ -5,6 +5,7 @@ import {KBarProvider, KBarPortal, KBarAnimator, KBarSearch, KBarPositioner, Acti
 import RenderResults from './render-results';
 import { useLocalStorage } from 'usehooks-ts';
 import useThemeSwitching from './use-theme-switching';
+import useAccountSwitching from './use-account-switching';
 
 
 export default function KBar({ children } : {children : React.ReactNode}) {
@@ -82,6 +83,7 @@ export default function KBar({ children } : {children : React.ReactNode}) {
 const ActualComponent = ({children} : {children : React.ReactNode }) => {
 
   useThemeSwitching();
+  useAccountSwitching()
   return (
     <>
     <KBarPortal>
