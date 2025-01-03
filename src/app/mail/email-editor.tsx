@@ -58,7 +58,7 @@ const EmailEditor = ({subject, setSubject, toValues, setToValues, ccValues, setC
     })
 
     const onGenerate = (token: string) => {
-        console.log(token)
+        editor?.commands?.insertContent(token)   // Insert the OpenAI response in the email editor
     }
 
     if(!editor) return null;
