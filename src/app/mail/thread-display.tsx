@@ -72,61 +72,49 @@ const TheadDisplay = () => {
         <Separator />
 
         {thread ? (
-            <>
-            <div className="flex flex-col overflow-auto flex-grow">
-                <div className="flex items-center gap-4 text-sm p-4">
+          <div className="flex flex-col flex-1 overflow-scroll">
+            <div className="flex items-start p-4">
+              <div className="flex items-start gap-4 text-sm">
                 <Avatar>
-                    <AvatarImage alt="avatar" />
-                    <AvatarFallback>
-                    {thread.emails[0]?.from?.name
-                        ?.split(" ")
-                        .map((chunk) => chunk[0])
-                        .join(" ")}
-                    </AvatarFallback>
+                  <AvatarImage alt={'lol'} />
+                  <AvatarFallback>
+                    {thread?.emails[0]?.from?.name?.split(" ")
+                      .map((chunk) => chunk[0])
+                      .join("")}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid gap-1">
-                    <div className="font-semibold">
-                    {thread.emails[0]?.from.name}
-                    <div className="text-xs line-clamp-1">
-                        {thread.emails[0]?.subject}
-                    </div>
-                    <div className="text-xs line-clamp-1">
-                        <span className="font-medium">Reply-To:</span>{" "}
-                        {thread.emails[0]?.from?.address}
-                    </div>
-                    </div>
+                  <div className="font-semibold">{thread.emails[0]?.from?.name}</div>
+                  <div className="text-xs line-clamp-1">{thread.emails[0]?.subject}</div>
+                  <div className="text-xs line-clamp-1">
+                    <span className="font-medium">Reply-To:</span> {thread.emails[0]?.from?.address}
+                  </div>
                 </div>
-
-                {thread.emails[0]?.sentAt && (
-                    <div className="ml-auto text-xs text-muted-foreground">
-                    {format(new Date(thread.emails[0]?.sentAt), "PPpp")}
-                    </div>
-                )}
+              </div>
+              {thread.emails[0]?.sentAt && (
+                <div className="ml-auto text-xs text-muted-foreground">
+                  {format(new Date(thread.emails[0].sentAt), "PPpp")}
                 </div>
-
-                <Separator />
-                <div className="flex-grow overflow-auto">
-                <div className="p-6 flex flex-col gap-4">
-                    {thread.emails.map((email) => {
-                    return <EmailDisplay key={email.id} email={email} />
-                    })}
-                </div>
-                </div>
-
-                {/* Added explicit spacing for flex-1 */}
-                <div className="flex-1 bg-gray-50"></div>
-
-                <Separator className="mt-auto" />
-                <ReplyBox />
-                <div className="p-4 text-sm"></div>
+              )}
             </div>
-            </>
+            <Separator />
+            <div className="max-h-[calc(100vh-500px)] overflow-scroll flex flex-col">
+              <div className="p-6 flex flex-col gap-4">
+                {thread.emails.map(email => {
+                  return <EmailDisplay key={email.id} email={email} />
+                })}
+              </div>
+            </div>
+            <div className="flex-1"></div>
+            <Separator className="mt-auto" />
+            <ReplyBox />
+          </div>
         ) : (
-            <>
-            <div className="text-center p-8 text-muted-foreground">
-                No Message Selected
+          <>
+            <div className="p-8 text-center text-muted-foreground">
+              No message selected {threadId}
             </div>
-            </>
+          </>
         )}
         </div>
     );
