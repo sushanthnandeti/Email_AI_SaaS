@@ -6,6 +6,7 @@ import { Prisma } from "@prisma/client";
 
 
 
+
 export const authoriseAccountAccess = async( accountId : string, userId : string) => {
     const account = await db.account.findFirst( {
         where : {
@@ -105,5 +106,60 @@ export const accountRouter = createTRPCRouter({
                 lastMessageDate: "desc"  
             }
         })
-})
+        //return threads
+}),
+    getSuggestions : privateProcedure.input(z.object({
+        accountId : z.string()
+    })).query(async ({ctx, input}) => {
+        const account = await authoriseAccountAccess(input.accountId, ctx.auth.userId)
+        return await ctx.db.emailAddress.findMany({
+            where : { 
+                accountId : account.id, 
+            },
+            select : {
+                address: true, 
+                name : true,
+            }
+        })
+    }), 
+
+    getReplyDetails: privateProcedure.input(z.object({
+        accountId: z.string(),
+        threadId: z.string()
+    })).query(async({ctx, input}) => {
+        const account = await authoriseAccountAccess(input.accountId, ctx.auth.userId)
+        const thread = await ctx.db.thread.findFirst({
+            where: {
+                id: input.threadId,
+            },
+            include: {
+                emails: {
+                    orderBy: {sentAt: 'asc'},
+                    select: {
+                        from: true, 
+                        to: true, 
+                        cc: true, 
+                        bcc: true, 
+                        sentAt: true, 
+                        subject : true,
+                        internetMessageId: true
+                    }
+                }
+            }
+        })
+        if(!thread || thread.emails.length === 0) throw new Error('Thread not')
+            
+        const lastEternalEmail  = thread.emails.reverse().find(email => email.from.address !== account.emailAddress)
+        if(!lastEternalEmail) throw new Error('No External email found')
+
+        return {
+            subject : lastEternalEmail.subject,
+            to : [lastEternalEmail.from, ...lastEternalEmail.to.filter(to => to.address !== account.emailAddress)],
+            cc: lastEternalEmail.cc.filter(cc => cc.address !== account.emailAddress),
+            from: {name: account.name, address : account.emailAddress}
+        } 
+            
+        })
+        
+        
 })

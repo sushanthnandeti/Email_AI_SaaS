@@ -8,15 +8,32 @@ import EditorMenuBar from './editor-menubar';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import TagInput from './tag-input';
+import { Input } from '@/components/ui/input';
 
  
-type Props = {}
+type Props = {
+    subject : string 
+    setSubject : (value : string) => void
 
-const EmailEditor = (props: Props) => {
+    toValues : {label: string, value: string}[]
+    setToValues : (value : {label: string, value: string}[]) => void
+
+    ccValues : {label: string, value: string}[]
+    setCcValues : (value : {label: string, value: string}[]) => void
+
+    to : string[]
+
+    handleSend : (value : string) => void
+    isSending: boolean
+
+    defaultToolbarExpanded: boolean
+}
+
+const EmailEditor = ({subject, setSubject, toValues, setToValues, ccValues, setCcValues, to, handleSend, isSending, defaultToolbarExpanded = false}: Props) => {
 
     const [value, setValue] = React.useState<string>('')
-    const [expanded, setExpanded] = React.useState<boolean>(false)
-
+    const [expanded, setExpanded] = React.useState<boolean>(defaultToolbarExpanded)
+    
 
     const CustomText = Text.extend({
         addKeyboardShortcuts() {
@@ -47,12 +64,20 @@ const EmailEditor = (props: Props) => {
                 {expanded && (
                     <>
                         <TagInput 
-                            defaultValues={[]}
                             label='To'
-                            onChange={console.log}
+                            onChange={setToValues}
                             placeholder='Add Recipients'
-                            value={[]}
+                            value={toValues}
                             />
+                        
+                        <TagInput 
+                            label='CC'
+                            onChange={setCcValues}
+                            placeholder='Add Recipients'
+                            value={ccValues}
+                            />
+
+                        <Input id = 'subject' placeholder='Subject'  value={subject} onChange = {(e) => setSubject(e.target.value)}/>
                     </>
                 )}
             </div>
@@ -63,7 +88,7 @@ const EmailEditor = (props: Props) => {
                         Draft {" "}
                     </span>
                     <span> 
-                        to Sushanth
+                        to {to.join(',')}
                     </span>
                 </div>
             </div>
@@ -79,7 +104,11 @@ const EmailEditor = (props: Props) => {
                     </kbd> {" "}
                     for AI Autocomplete
                 </span>
-                <Button>
+                <Button onClick={async ()=> {
+                    editor?.commands?.clearContent()
+                    await handleSend(value) }}
+                    disabled = {isSending}
+                >
                     Send
                 </Button>
             </div>
