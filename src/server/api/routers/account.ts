@@ -68,6 +68,12 @@ export const accountRouter = createTRPCRouter({
         
         const account = await authoriseAccountAccess(input.accountId, ctx.auth.userId)
         
+        // Adding the sync emails logic to the getThreads procedure 
+
+        const acc = new Account(account.accessToken) 
+        acc.syncEmail().catch(console.error)
+
+        // Back to the getThreads section
 
         let filter: Prisma.ThreadWhereInput = {}
 
