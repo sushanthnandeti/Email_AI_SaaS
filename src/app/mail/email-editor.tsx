@@ -33,7 +33,6 @@ type Props = {
 }
 
 
-
 const EmailEditor = ({subject, setSubject, toValues, setToValues, ccValues, setCcValues, to, handleSend, isSending, defaultToolbarExpanded = false}: Props) => {
 
     const [value, setValue] = React.useState<string>('')
