@@ -10,6 +10,7 @@ import AccountSwitcher from './account-switcher'
 import Sidebar from './sidebar'
 import ThreadList from './thread-list'
 import TheadDisplay from './thread-display'
+import SearchBar from './search-bar'
 
 
 
@@ -76,7 +77,7 @@ const Mail = ({ defaultLayout = [20,32,48],navCollapsedSize,defaultCollapse } : 
 
                 <Separator />
                     {/* Seach Bar */}
-                     Search Bar
+                     <SearchBar />
                 <TabsContent value={'inbox'}> 
                      <ThreadList />
                 </TabsContent>

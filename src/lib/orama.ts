@@ -1,6 +1,6 @@
 
 import { db } from "@/server/db"
-import {AnyOrama , create, insert, search} from "@orama/orama"
+import {type AnyOrama , create, insert, search} from "@orama/orama"
 import {persist, restore} from '@orama/plugin-data-persistence'
 
 export class OramaClient {
