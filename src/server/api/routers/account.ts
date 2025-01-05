@@ -71,7 +71,7 @@ export const accountRouter = createTRPCRouter({
         // Adding the sync emails logic to the getThreads procedure 
 
         const acc = new Account(account.accessToken) 
-        acc.syncEmail().catch(console.error)
+        acc.syncEmails().catch(console.error)
 
         // Back to the getThreads section
 
