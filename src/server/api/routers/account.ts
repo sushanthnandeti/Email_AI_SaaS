@@ -5,6 +5,7 @@ import { z } from "zod";
 import { Prisma } from "@prisma/client";
 import { emailAddressSchema } from "@/lib/types";
 import { Account } from "@/lib/account";
+import { OramaClient } from "@/lib/orama";
 
 
 
@@ -194,6 +195,18 @@ export const accountRouter = createTRPCRouter({
             inReplyTo: input.inReplyTo,
             threadId: input.threadId,       
         })
+     }),
+
+     searchEmails: privateProcedure.input(z.object({
+        accountId : z.string(),
+        query: z.string()
+     })).mutation(async ({ ctx, input}) => {
+        const account  = await authoriseAccountAccess(input.accountId, ctx.auth.userId)
+        const orama =  new OramaClient(account.id)
+        await orama.initialize()
+        const results = await orama.search({term: input.query})
+
+        return results
      })
         
         
