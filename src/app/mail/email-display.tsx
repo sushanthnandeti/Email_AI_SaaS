@@ -17,7 +17,7 @@ const EmailDisplay = ({email}: Props) => {
 
     return ( 
         <div className={cn('border rounded-md p-4 transition-all hover: translate-x-2', {
-            'border-1-gray-900 border-1-4' :isMe
+            'border-1-black-900 border-1-4' : isMe
         })
         }>
             <div className='flex items-center justify-between gap-2'>

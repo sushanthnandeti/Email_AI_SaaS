@@ -28,6 +28,7 @@ model Account {
     emailAddress       String 
     name               String
     nextDeltaToken     String?
+    oramaIndex         Json?
 
     threads            Thread[]
     emailAddresses     EmailAddress[]
