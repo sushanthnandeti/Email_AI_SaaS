@@ -12,7 +12,7 @@ export const isSearchingAtom = atom(false)
 const SearchBar = () => {
 
     const [searchValue , setSearchValue] = useAtom(searchValueAtom)
-    const [isSeatching , setIsSearching] = useAtom(isSearchingAtom)
+    const [isSearching , setIsSearching] = useAtom(isSearchingAtom)
     const {isFetching} = useThreads()
 
     const handleBlur = () => {

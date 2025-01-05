@@ -8,7 +8,7 @@ import useThreads from '@/hooks/use-threads'
 
 const SearchDisplay = () => {
 
-    const searchValue  = useAtom(searchValueAtom)
+    const [searchValue]  = useAtom(searchValueAtom)
     const search = api.account.searchEmails.useMutation()
     const [debouncedSearchValue] = useDebounceValue(searchValue, 500)
     const {accountId} = useThreads()
