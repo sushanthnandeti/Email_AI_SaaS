@@ -1,15 +1,28 @@
 import React from 'react'
 import {AnimatePresence, motion} from 'framer-motion'
 import { cn } from '@/lib/utils'
-import { Send } from 'lucide-react'
+import { Send, SparkleIcon } from 'lucide-react'
+import {useChat} from 'ai/react'
+import useThreads from '@/hooks/use-threads'
 
 const AskAi = ( {isCollapsed} : {isCollapsed : boolean}) => {
+    
+    const {accountId} = useThreads()
 
-    const messages : any[] = []
+    const {input, handleInputChange, handleSubmit, messages } = useChat({
+        api : 'api/chat',
+        body : {
+            accountId
+        },
+        onError : error => {
+            console.log('error', error)
+        },
+        initialMessages: []
+    })  
     if (isCollapsed) return null
     return (
         <div className='p-4 mb-14'>
-            <motion.div className='flex flex-1 flex-col items-end pb-4 rounded-lg bg-gray-100 shadow-inner dark:bg-gray-90'>
+            <motion.div className='flex flex-1 flex-col items-end pb-4 p-4 rounded-lg bg-gray-100 shadow-inner dark:bg-gray-90'>
                 <div className='max-h-[50vh] overflow-y-scroll w-full flex flex-col gap-2 ' id = 'message-container'> 
                     <AnimatePresence mode='wait' >
                         {messages.map(message => {
@@ -18,7 +31,7 @@ const AskAi = ( {isCollapsed} : {isCollapsed : boolean}) => {
                                     'self-end text-gray-900 dark:text-gray-100' : message.role === 'user', 
                                     'self-start bg-blue-500 text-white' : message.role === 'assistant'  
                                 })}
-                                layoutId = {`container - [${message.length - 1}]`}
+                                layoutId = {`container - [${messages.length - 1}]`}
                                 transition={{
                                     type :'easeout', 
                                     duration: 0.2
@@ -34,15 +47,57 @@ const AskAi = ( {isCollapsed} : {isCollapsed : boolean}) => {
                     </AnimatePresence>    
                  </div>   
 
+                 {messages.length > 0 && <div className='h-4' />}
+
                  <div className='w-full'>
-                        <form className='w-full flex'>
+                        {messages.length === 0 && <div className='mb-4'> 
+                            <div className='flex items-center gap-4'>
+                                <SparkleIcon className='size-6 text-gray-600'/>
+                                    <div>
+                                        <p className='text-gray-900 dark:text-gray-100'> Ask AI anything about your emails </p>
+                                        <p className='text-gray-500 text-xs dark:text-gray-400'> Get answers to your questions about emails</p>
+                                    </div> 
+                            </div>  
+
+                            <div className='h-2'> </div>
+                            <div className="flex items-center gap-2 flex-wrap">
+                                <span className='px-2 py-1 bg-gray-800 text-gray-200 rounded-md text-xs' onClick={() => {
+                                    handleInputChange({
+                                        target : { value : 'What can I ask?'}
+                                    })
+                                }}>
+                                    What can I ask?
+                                </span>
+
+                                <span className='px-2 py-1 bg-gray-800 text-gray-200 rounded-md text-xs' onClick={() => {
+                                    handleInputChange({
+                                        target : { value : 'When is my next flight?'}
+                                    })
+                                }}>
+                                    When is my next flight?
+                                </span>
+
+                                <span className='px-2 py-1 bg-gray-800 text-gray-200 rounded-md text-xs' onClick={() => {
+                                    handleInputChange({
+                                        target : { value : 'When is my next meeting?'}
+                                    })
+                                }}>
+                                    When is my next meeting? 
+                                </span>
+                            </div>
+                            
+                        </div>}
+                        <form className='w-full flex' onSubmit={handleSubmit}>
                             <input type='text'
                                 className='py-1 relative h-9 placeholder:text-[13px] flex-grow rounded-full border border-gray-200 bg-white px-3 text-[15px] outline-none'
                                 placeholder='Ask AI'
+                                value={input}
+                                onChange={handleInputChange}
                             />
 
                         <motion.div key = {messages.length}
                             layout = 'position'
+                            className='pointer-events-none absolute z-10 flex h-9 w-[250px] items-center overflow-hidden break-words rounded-full bg-gray-200 [word-break:break-word] dark:bg-gray-800'
                             layoutId = {`container - [${messages.length}]`}
                             transition = {{
                                 type : 'easeOut',
