@@ -14,7 +14,7 @@ const SearchDisplay = () => {
     const {accountId} = useThreads()
 
     useEffect(()=> {
-        if (!debouncedSearchValue || !accountId) return
+        if (!accountId) return
 
         search.mutate({
             accountId, 
@@ -31,11 +31,11 @@ const SearchDisplay = () => {
                         Your Search for &quot; {searchValue} &quot; : came back with...
                 </h2>
             </div>
-
+            <ul className='flex flex-col gap-2'>
             {search.data?.hits.length === 0 ? (<>
                 <p> No Results found. </p> </>) : <>
                 {search.data?.hits.map(hit => (
-                    <li key={hit.id} className="border rounded-md p-4 hover:bg-gray-100 cursor-pointer transition-all dark:hover:bg-gray-900">
+                    <li key={hit.id} className="border rounded-md list-none p-4 hover:bg-gray-100 cursor-pointer transition-all dark:hover:bg-gray-900">
                         <h3 className='text-base font-medium'>
                                 {hit.document.subject}
                         </h3>
@@ -58,6 +58,7 @@ const SearchDisplay = () => {
                     
                 ))}
                 </> }
+                </ul>
         </div>
     )
 }

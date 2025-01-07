@@ -8,8 +8,6 @@ import { Account } from "@/lib/account";
 import { OramaClient } from "@/lib/orama";
 
 
-
-
 export const authoriseAccountAccess = async( accountId : string, userId : string) => {
     const account = await db.account.findFirst( {
         where : {

@@ -31,7 +31,7 @@ const ThreadList = () => {
                 return <React.Fragment key = {date}>
 
                         <div className='text-xs font-medium text-muted-foreground mt-5 first:mt-0'>
-                                    {date}
+                                    {format(new Date(date), "MMMM d, yyyy")}
                         </div>
                         
                         <div> 
@@ -42,7 +42,7 @@ const ThreadList = () => {
                                 )
                                     }>
                                             <div className='flex flex-col w-full gap-2'>
-                                                <div className='flex items-center gap-2'>
+                                                <div className='flex items-centerg'>
                                                     <div className='font-semibold'>
                                                         {thread.emails.at(-1)?.from.name}
                                                     </div>

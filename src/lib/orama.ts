@@ -2,6 +2,7 @@
 import { db } from "@/server/db"
 import {type AnyOrama , create, insert, search} from "@orama/orama"
 import {persist, restore} from '@orama/plugin-data-persistence'
+import { getEmbeddings } from "./embeddings"
 
 export class OramaClient {
     // @ts-ignore
@@ -47,7 +48,7 @@ export class OramaClient {
                     to: 'string[]',
                     sentAt : 'string',
                     threadId: 'string',
-                    // embeddings  : 'vector[1536]'                
+                    embeddings  : 'vector[1536]'                
                 }
             })
 
@@ -58,6 +59,22 @@ export class OramaClient {
         return await search(this.orama, {
             term 
         })
+    }
+
+    async vectorSearch( {term } : {term : string}) {
+        // Example search term or prompt: when is my next flight
+        const embeddings = await getEmbeddings(term)
+        const results = await search(this.orama, {
+            mode: 'hybrid',
+            term: term,
+            vector: {
+                value : embeddings,
+                property: 'embeddings'
+            },
+            similarity: 0.8,
+            limit: 10
+        })
+        return results
     }
 
     async insert( document : any) {

@@ -1,4 +1,5 @@
 
+import { getEmbeddings } from "./lib/embeddings";
 import { OramaClient } from "./lib/orama";
 import { turndown } from "./lib/turndown";
 import { db } from "./server/db";
@@ -7,7 +8,7 @@ import { create, insert, search, type AnyOrama} from "@orama/orama";
 const orama = new OramaClient('87817')
 await orama.initialize()
 
-
+/* 
 const emails = await db.email.findMany({
     select: {
         subject : true,
@@ -20,10 +21,11 @@ const emails = await db.email.findMany({
     }
 })
 
-for (const email of emails) {
+await Promise.all(emails.map(async(email) => {
 
     const body = turndown.turndown(email.body ?? email.bodySnippet ?? "")
-    
+    const embeddings = await getEmbeddings(body)
+    console.log(embeddings.length)
     await orama.insert({
         subject: email.subject,
         body: body,
@@ -31,12 +33,14 @@ for (const email of emails) {
         from: email.from.address,
         to: email.to.map(to => to.address),
         sentAt: email.sentAt.toLocaleString(),
-        threadId: email.threadId
+        threadId: email.threadId,
+        embeddings
     })
-   
-}
+}))
 
-const searchResult = await orama.search({
+await orama.saveIndex() */
+
+const searchResult = await orama.vectorSearch({
     term: "google",
 })
 

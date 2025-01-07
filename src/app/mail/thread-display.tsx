@@ -75,7 +75,7 @@ const TheadDisplay = () => {
 
         <Separator />
 
-        {isSearching ? <> <SearchDisplay /> </> : (
+        {isSearching ? <> <SearchDisplay />  </> : (
           <>
               {thread ? (
           <div className="flex flex-col flex-1 overflow-scroll">

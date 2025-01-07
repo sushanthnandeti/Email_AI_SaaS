@@ -4,6 +4,7 @@ import { db } from "@/server/db";
 import { Prisma } from "@prisma/client";
 import { OramaClient } from "./orama";
 import { turndown } from "./turndown";
+import { getEmbeddings } from "./embeddings";
 export async function syncEmailsToDatabase(emails: EmailMessage[] , accountId: string) {
 
         console.log('Attempting to sync emails to database', emails.length)
@@ -20,6 +21,8 @@ export async function syncEmailsToDatabase(emails: EmailMessage[] , accountId: s
             for (const email of emails) {
 
                 const body = turndown.turndown(email.body ?? email.bodySnippet ?? "")
+                const emebddings = await getEmbeddings(body)
+
                 await orama.insert( {
                     subject: email.subject,
                     body: body,
@@ -27,7 +30,8 @@ export async function syncEmailsToDatabase(emails: EmailMessage[] , accountId: s
                     from: email.from.address,
                     to: email.to.map(to => to.address),
                     sentAt: email.sentAt.toLocaleString(),
-                    threadId: email.threadId
+                    threadId: email.threadId,
+                    emebddings
                 })
                 await upsertEmail(email, accountId, 0)
             }

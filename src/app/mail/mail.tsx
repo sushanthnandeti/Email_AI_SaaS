@@ -11,6 +11,7 @@ import Sidebar from './sidebar'
 import ThreadList from './thread-list'
 import TheadDisplay from './thread-display'
 import SearchBar from './search-bar'
+import AskAi from './ask-ai'
 
 
 
@@ -60,7 +61,7 @@ const Mail = ({ defaultLayout = [20,32,48],navCollapsedSize,defaultCollapse } : 
 
                         <div className='flex-1'>  </div>
                            {/*  Ask AI */}
-                           ASK AI
+                           <AskAi isCollapsed={isCollapsed} />
                 </div>
             </ResizablePanel>    
             <ResizableHandle withHandle/>
