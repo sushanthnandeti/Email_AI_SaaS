@@ -66,7 +66,7 @@
     "@types/dompurify": "^3.2.0",
     "@types/turndown": "^5.0.5",
     "@vercel/functions": "^1.5.2",
-    "ai": "^4.0.23",
+    "ai": "^4.0.29",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

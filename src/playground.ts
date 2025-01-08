@@ -8,7 +8,7 @@ import { create, insert, search, type AnyOrama} from "@orama/orama";
 const orama = new OramaClient('87817')
 await orama.initialize()
 
-/* 
+
 const emails = await db.email.findMany({
     select: {
         subject : true,
@@ -38,10 +38,10 @@ await Promise.all(emails.map(async(email) => {
     })
 }))
 
-await orama.saveIndex() */
+await orama.saveIndex()
 
-const searchResult = await orama.vectorSearch({
+/* const searchResult = await orama.vectorSearch({
     term: "google",
 })
 
-console.log(searchResult.hits)
+console.log(searchResult.hits) */
