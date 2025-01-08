@@ -40,8 +40,8 @@ await Promise.all(emails.map(async(email) => {
 
 await orama.saveIndex()
 
-/* const searchResult = await orama.vectorSearch({
+const searchResult = await orama.vectorSearch({
     term: "google",
 })
 
-console.log(searchResult.hits) */
+console.log(searchResult.hits)

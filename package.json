@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "-": "^0.0.1",
-    "@ai-sdk/openai": "^1.0.12",
+    "@ai-sdk/openai": "^1.0.14",
     "@clerk/nextjs": "^6.9.6",
     "@hookform/resolvers": "^3.9.1",
     "@orama/orama": "^3.0.4",
