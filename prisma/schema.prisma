@@ -12,14 +12,15 @@ datasource db {
 
 
 model User {
-    id                  String      @id @default(cuid())
-    emailAddress        String      @unique
-    firstName           String
-    lastName            String
-    imageUrl            String?
-    accounts            Account[]
-}   
-
+    id                      String      @id @default(cuid())
+    emailAddress            String      @unique
+    firstName               String?
+    lastName                String?
+    imageUrl                String?
+    accounts                Account[]
+    stripeSubscriptionId    StripeSubscription?
+    
+}
 
 model Account {
     id                 String       @id @default(cuid())
@@ -36,6 +37,22 @@ model Account {
     user               User           @relation(fields: [userId], references: [id])
 }
 
+
+model StripeSubscription {
+    id              String      @id @default(cuid())
+    createdAt       DateTime    @default(now())
+
+    userId          String     @unique
+    user            User       @relation(fields : [userId], references : [id])
+
+    subscriptionId String? @unique
+  
+    priceId        String?
+    customerId     String?
+
+    currentPeriodEnd DateTime
+    updatedAt        DateTime @updatedAt
+}
 
 model Thread {
     id              String   @id @default(cuid())
