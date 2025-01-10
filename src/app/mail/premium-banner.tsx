@@ -1,12 +1,21 @@
 'use client'
 
 import { FREE_CREDITS_PER_DAY } from '@/constants'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import StripeButton from './stripe-button'
+import { getSubscriptionStatus } from '@/lib/stripe_actions'
 
 const PremiumBanner= () => {
 
-  const isSubscribed = false 
+  const [isSubscribed, setIsSubscribed] = useState(false)
+
+  useEffect (() => {
+    ( async () => {
+    const subscriptionStatus = await getSubscriptionStatus() 
+    setIsSubscribed(subscriptionStatus)}) 
+    
+    ()}, [])
+
   const remainingCredits = 5
 
   if (!isSubscribed) return <div className='bg-gray-900 relative p-4 rounded-lg border overflow-hidden flex flex-col md:flex-row gap-4'>
@@ -30,9 +39,26 @@ const PremiumBanner= () => {
 
       </div>
 
-  return (
-    <div>premium-button</div>
-  )
-}
+      if (isSubscribed) return <div className='bg-gray-900 relative p-4 rounded-lg border overflow-hidden flex flex-col md:flex-row gap-4'>
+
+      <img src = '/bot.webp' className='md:absolute md:-bottom-6 md:-right-10 h-[180px] w-auto'/>
+      <div>
+            <div className='flex items-center gap-2'>
+                <h1 className='text-white text-xl font-bold'> Premium Plan</h1>
+             
+            </div>
+            <div className='h-4'></div>
+            <p className='text-gray-400 text-sm md:max-w-[calc(100%-70px)]'>
+            <p className='text-gray-400 text-sm md:max-w-full'>
+                      Ask as many questions as you want!
+                </p>
+            </p>
+            <div className='h-4'></div>
+            <StripeButton />
+      </div>
+
+
+      </div>
+      }
 
 export default PremiumBanner

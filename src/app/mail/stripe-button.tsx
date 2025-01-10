@@ -14,7 +14,7 @@ const StripeButton = () => {
         
         <Button variant={'outline'} size='lg' onClick = {handleClick}>  
 
-
+            Upgrade Plan
         </Button>
     )
 }

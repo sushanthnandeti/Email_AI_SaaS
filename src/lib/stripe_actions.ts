@@ -3,6 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { stripe } from "./stripe";
 import { redirect } from "next/navigation";
+import { db } from "@/server/db";
 
 
 export async function createCheckoutSession() {
@@ -25,4 +26,20 @@ export async function createCheckoutSession() {
         client_reference_id : userId
     })
     redirect(session.url as string)
+}
+
+export async function getSubscriptionStatus() {
+
+    const { userId} = await auth();
+    if (!userId) return false 
+
+    const subscription = await db.stripeSubscription.findUnique({
+        where : {
+            userId : userId
+        }
+    })
+
+    if (!subscription) return false
+
+    return subscription.currentPeriodEnd > new Date()
 }
