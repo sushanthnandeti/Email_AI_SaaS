@@ -28,6 +28,27 @@ export async function createCheckoutSession() {
     redirect(session.url as string)
 }
 
+export async function createBillingPortalSession() { 
+    const {userId} = await auth()
+    if (!userId) return new Error('Unauthorize')
+    
+    const subscription = await db.stripeSubscription.findUnique({
+        where : {
+            userId : userId 
+        }
+    })
+
+    if (!subscription) throw new Error('Subscription not found')
+
+    const session = await stripe.billingPortal.sessions.create({
+        customer: subscription.customerId,
+        return_url : `${process.env.NEXT_PUBLIC_URL}/mail`
+    })
+
+    redirect(session.url as string)
+}
+  
+
 export async function getSubscriptionStatus() {
 
     const { userId} = await auth();
