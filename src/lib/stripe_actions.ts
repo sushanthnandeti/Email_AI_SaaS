@@ -44,7 +44,7 @@ export async function createBillingPortalSession() {
         customer: subscription.customerId,
         return_url : `${process.env.NEXT_PUBLIC_URL}/mail`
     })
-
+    
     redirect(session.url as string)
 }
   

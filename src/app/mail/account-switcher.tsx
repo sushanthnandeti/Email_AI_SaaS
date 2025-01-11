@@ -6,6 +6,7 @@ import { SelectTrigger, SelectValue } from "@radix-ui/react-select";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import { getAurinkoAuthUrl } from "@/lib/aurinko";
+import { toast } from "sonner";
 
 type Props = {
     isCollapsed : boolean
@@ -46,8 +47,12 @@ const AccountSwitcher = ({isCollapsed} : Props) => {
                                 })}
 
                                 <div onClick = {async () => {
-                                    const authurl = await getAurinkoAuthUrl('Google')
-                                    window.location.href = authurl
+                                    try {
+                                        const authurl = await getAurinkoAuthUrl('Google')
+                                        window.location.href = authurl
+                                    } catch (error) {
+                                        toast.error(error.message)
+                                    }
                                 }}
                                 className="flex relative hover:bg-gray-50 w-full cursor-pointer items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-accent">
                                     <Plus className="size-4 mr-1" />

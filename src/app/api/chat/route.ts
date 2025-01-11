@@ -3,6 +3,10 @@ import { Message, streamText } from "ai";
 import { auth } from "@clerk/nextjs/server";
 import { OramaClient } from "@/lib/orama";
 import { openai } from '@ai-sdk/openai';
+import { getSubscriptionStatus } from "@/lib/stripe_actions";
+import { db } from "@/server/db";
+import { FREE_CREDITS_PER_DAY } from "@/constants";
+import { toast } from "sonner";
 
 // Initialize OpenAI client
 /* const openai = new OpenAIApi(
@@ -12,12 +16,38 @@ import { openai } from '@ai-sdk/openai';
 ); */
 
 export async function POST(req: Request) {
+
+    const today = new Date().toDateString()
+
     try {
         // Authenticate the user
         const { userId } = await auth();
         if (!userId) {
             return new Response("Unauthorized", { status: 401 });
         }
+
+        const isSubscribed = await getSubscriptionStatus()
+        
+        if(!isSubscribed) {
+            const chatbotInteraction = await db.chatbotInteraction.findUnique({
+                where: {
+                    day : today,
+                    userId  
+                }
+            })
+            if(!chatbotInteraction) {
+                await db.chatbotInteraction.create({
+                    data: {
+                        day : today, 
+                        userId,
+                        count : 1
+                    }
+                })
+            } else if (chatbotInteraction.count >= FREE_CREDITS_PER_DAY ) {
+                
+                return new Response("You have reached your daily free chat limit", { status: 403 });
+                    }
+            }
 
         // Parse request body
         const { accountId, messages } = await req.json();
@@ -61,9 +91,23 @@ export async function POST(req: Request) {
             ],
            
         });
-
         // Return the streaming response
+        async() => {
+            await db.chatbotInteraction.update( {
+                where : {
+                    day: today, 
+                    userId
+                },
+                data : {
+                    count: {
+                        increment : 1
+                    }
+                }
+            })
+        }
         return result.toDataStreamResponse();
+
+      
     } catch (error) {
         console.error("Error:", error);
         return new Response("Internal Server Error", { status: 500 });
