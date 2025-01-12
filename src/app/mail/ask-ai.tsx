@@ -5,10 +5,13 @@ import { Send, SparkleIcon } from 'lucide-react'
 import {useChat} from 'ai/react'
 import useThreads from '@/hooks/use-threads'
 import PremiumBanner from './premium-banner'
+import { api } from '@/trpc/react'
+import { toast } from 'sonner'
 
 const AskAi = ( {isCollapsed} : {isCollapsed : boolean}) => {
     
     const {accountId} = useThreads()
+    const  utils = api.useUtils()
 
     const {input, handleInputChange, handleSubmit, messages } = useChat({
         api : 'api/chat',
@@ -16,7 +19,11 @@ const AskAi = ( {isCollapsed} : {isCollapsed : boolean}) => {
             accountId
         },
         onError : error => {
+            toast.error(error.message)
             console.log('error', error)
+        },
+        onFinish: () => {
+            utils.account.getChatbotInteraction.refetch()
         },
         initialMessages: []
     })  

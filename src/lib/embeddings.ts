@@ -1,7 +1,7 @@
 import {OpenAIApi, Configuration} from 'openai-edge';
 
 const config =  new Configuration({
-    apiKey: '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'
+    apiKey: process.env.OPENAI_API_KEY
     
 })
 
