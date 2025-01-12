@@ -45,7 +45,7 @@ export async function POST(req: Request) {
                 })
             } else if (chatbotInteraction.count >= FREE_CREDITS_PER_DAY ) {
                 
-                return new Response("You have reached your daily free chat limit", { status: 403 });
+                return new Response("You have reached your daily free chat limit", { status: 429 });
                     }
             }
 

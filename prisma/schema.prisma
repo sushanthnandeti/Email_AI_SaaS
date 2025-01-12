@@ -19,6 +19,8 @@ model User {
     imageUrl                String?
     accounts                Account[]
     stripeSubscriptionId    StripeSubscription?
+
+    chatbotInteraction      ChatbotInteraction?
     
 }
 
@@ -52,6 +54,20 @@ model StripeSubscription {
 
     currentPeriodEnd DateTime
     updatedAt        DateTime @updatedAt
+}
+
+
+model ChatbotInteraction {
+    id          String      @id @default(cuid())
+
+    day         String
+    count       Int         @default(1)
+
+    userId      String?     @unique
+    user        User?       @relation(fields: [userId], references: [id])
+
+    @@unique([day, userId])
+    @@index([day, userId])
 }
 
 model Thread {
